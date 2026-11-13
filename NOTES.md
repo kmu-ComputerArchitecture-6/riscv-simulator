@@ -33,8 +33,10 @@
 - 7 종료 처리 (출력 한 줄, data.out 저장) + 4 data.out 쓰기
 - 어셈블러 (테스트 도구, 처음에 팀원 한 명이 맡기로 했던 것)
 
-먼저 정해야 할 것:
-- 2번 → 3번 인터페이스 (구조 담당이 정함). 3번이 다음 PC(또는 분기 여부)와 invalid 여부를 2번에게 돌려줘야 함
+2번 ↔ 3번 인터페이스 (정함):
+- `bool execute(CPU& cpu, Memory& mem, uint32_t inst)`
+- 3번이 cpu.pc를 직접 다음 PC로 바꿈. 반환값은 정상(true) / invalid(false)
+- invalid면 아무것도 바꾸지 않음. 2번이 fetchPC를 따로 저장해 두고 finish에 넘김
 
 실행 루프 주의:
 - 입력은 줄 단위 텍스트가 아님. PC 위치에서 4바이트씩 읽음
@@ -53,16 +55,18 @@
 - 8장 제출물 "자체 테스트 입출력: ... 테스트 목적 또는 생성 코드"로 제출 가능
 - 학습목표 ① (인코딩과 해독), 시험 대비에 도움
 
-## 폴더 구조
+## 폴더 구조 (2026-11-13 뼈대 생성)
 ```
 RISCV/
 ├── README.md
-├── Makefile
+├── Makefile / CMakeLists.txt
 ├── src/
-│   ├── main.cpp            인자 처리, 전체 흐름
-│   ├── memory.h / .cpp     파일 적재, little-endian 읽기/쓰기, data.out 저장
-│   ├── decoder.h / .cpp    필드 추출, 즉시값, invalid 판별
-│   └── cpu.h / .cpp        레지스터, fetch 루프, 명령어 실행, 종료 출력
+│   ├── main.cpp            인자 처리, 적재, run 호출                  (2번)
+│   ├── memory.h / .cpp     Memory 구조체, fetchWord/loadWord/storeWord (1번, 구현 완료)
+│   ├── loader.h / .cpp     loadText, loadData                         (2번)
+│   ├── simulator.h / .cpp  run (실행 루프), finish (종료 처리)         (run 2번, finish 미정)
+│   ├── cpu.h / .cpp        CPU 구조체(pc, reg), setReg, execute        (setReg 1번 완료, execute 3번)
+│   └── decoder.h / .cpp    해독                                       (3번, 설계도 3번)
 ├── tests/
 │   ├── tools/              어셈블러 / 테스트 바이너리 생성
 │   ├── cases/              테스트별 폴더 (text.bin, data.bin, 기대 출력, 설명)
