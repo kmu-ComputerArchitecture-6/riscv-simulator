@@ -7,8 +7,11 @@ int run(CPU& cpu, Memory& mem) {
     //   반복:
     //     fetchPC = cpu.pc
     //     inst = fetchWord(mem, fetchPC)
+    //     실행 개수가 MAX_STEPS에 도달했으면 (100만 개 실행 완료):
+    //       isSupported(inst)가 false → finish(mem, fetchPC, inst) 후 0 반환 (정상 종료)
+    //       isSupported(inst)가 true  → 실행하지 않고 stderr에 메시지, 0이 아닌 값 반환
     //     execute(cpu, mem, inst)가 false면 finish(mem, fetchPC, inst) 후 0 반환
-    //     실행 개수가 MAX_STEPS를 넘으면 stderr에 메시지, 0이 아닌 값 반환
+    //     true면 실행 개수 + 1
     (void)cpu;
     (void)mem;
     return 1;

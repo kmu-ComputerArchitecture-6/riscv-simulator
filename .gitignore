@@ -4,6 +4,12 @@ riscv_sim.exe
 *.o
 *.obj
 
+# IDE (CLion, VS Code)
+.idea/
+cmake-build-*/
+build/
+.vscode/
+
 # simulator output
 data.out
 

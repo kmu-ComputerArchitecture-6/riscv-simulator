@@ -37,6 +37,7 @@
 - `bool execute(CPU& cpu, Memory& mem, uint32_t inst)`
 - 3번이 cpu.pc를 직접 다음 PC로 바꿈. 반환값은 정상(true) / invalid(false)
 - invalid면 아무것도 바꾸지 않음. 2번이 fetchPC를 따로 저장해 두고 finish에 넘김
+- `bool isSupported(uint32_t inst)` (3번): 실행하지 않고 판별만. 100만 개 실행 후 다음 명령어 판단에 사용
 
 실행 루프 주의:
 - 입력은 줄 단위 텍스트가 아님. PC 위치에서 4바이트씩 읽음

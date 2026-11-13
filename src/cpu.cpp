@@ -8,6 +8,13 @@ void setReg(CPU& cpu, uint32_t rd, uint32_t value) {
 }
 
 // 담당: 3번
+bool isSupported(uint32_t inst) {
+    // TODO(3번): opcode + funct3 + funct7로 14개 명령어 중 하나인지 판별
+    (void)inst;
+    return false;
+}
+
+// 담당: 3번
 bool execute(CPU& cpu, Memory& mem, uint32_t inst) {
     // TODO(3번): decoder로 명령어를 해독하고 14개 명령어를 실행
     //   add sub and or / addi andi ori / lui / lw sw / beq bne blt bge
