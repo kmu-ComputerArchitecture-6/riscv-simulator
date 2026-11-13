@@ -1,0 +1,11 @@
+# build outputs
+riscv_sim
+riscv_sim.exe
+*.o
+*.obj
+
+# simulator output
+data.out
+
+# local only
+team_plan.html
