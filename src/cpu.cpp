@@ -10,7 +10,6 @@ void setReg(CPU& cpu, uint32_t rd, uint32_t value) {
 // 담당: 3번
 bool isSupported(uint32_t inst) {
     // TODO(3번): opcode + funct3 + funct7로 14개 명령어 중 하나인지 판별
-    (void)inst;
     return false;
 }
 
@@ -22,8 +21,5 @@ bool execute(CPU& cpu, Memory& mem, uint32_t inst) {
     //   - lw/sw는 loadWord / storeWord 사용
     //   - blt/bge는 (int32_t)로 캐스팅해서 비교
     //   - 실행 후 cpu.pc 갱신
-    (void)cpu;
-    (void)mem;
-    (void)inst;
     return false;  // 지금은 모든 명령어를 invalid로 처리
 }

@@ -8,8 +8,6 @@
 
 int main(int argc, char* argv[]) {
     // TODO(2번): 인자 개수 확인 (2개가 아니면 stderr에 사용법, 종료 코드 1)
-    (void)argc;
-    (void)argv;
 
     Memory mem;
     CPU cpu;
