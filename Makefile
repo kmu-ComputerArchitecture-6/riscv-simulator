@@ -1,9 +1,9 @@
 CXX      = g++
-CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
+CXXFLAGS = -std=c++17 -O2 -Wall -Wextra -Iinclude
 TARGET   = riscv_sim
 SRCS     = $(wildcard src/*.cpp)
 
-$(TARGET): $(SRCS) $(wildcard src/*.h)
+$(TARGET): $(SRCS) $(wildcard include/*.h)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS)
 
 clean:

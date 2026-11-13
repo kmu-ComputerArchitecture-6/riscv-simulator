@@ -12,7 +12,7 @@ RV32I 명령어 14개를 실행하는 기능 시뮬레이터.
 
 ## 빌드
 ```bash
-g++ -std=c++17 -O2 -o riscv_sim src/*.cpp
+g++ -std=c++17 -O2 -Iinclude -o riscv_sim src/*.cpp
 ```
 또는 `make`
 
@@ -26,10 +26,13 @@ g++ -std=c++17 -O2 -o riscv_sim src/*.cpp
 ## 파일 배치
 | 파일 | 내용 |
 |---|---|
-| `src/main.cpp` | 인자 처리, 적재, 실행 시작 |
-| `src/memory.h/.cpp` | 메모리 표현, little-endian 읽기/쓰기 |
-| `src/loader.h/.cpp` | text.bin, data.bin 적재 |
-| `src/simulator.h/.cpp` | 실행 루프, 종료 처리 |
-| `src/cpu.h/.cpp` | CPU 상태(PC, 레지스터), 명령어 실행 |
-| `src/decoder.h/.cpp` | 명령어 해독 |
-| `tests/` | 자체 테스트 |
+헤더는 `include/`, 구현은 `src/`에 있다.
+
+| 파일 | 내용 |
+|---|---|
+| `src/main.cpp` | 인자 처리, 적재, 실행 루프, 종료 처리 |
+| `memory.h` / `memory.cpp` | 메모리 표현, little-endian 읽기/쓰기 |
+| `loader.h` / `loader.cpp` | text.bin, data.bin 적재 |
+| `cpu.h` / `cpu.cpp` | CPU 상태(PC, 레지스터), 명령어 실행 |
+| `decoder.h` / `decoder.cpp` | 명령어 해독 |
+| `tests/cases/` | 테스트 입력과 기대 출력 |

@@ -30,14 +30,14 @@
 | 3번 | CPU: 기계어를 받아 해독 + 연산 | 8~15 |
 
 아직 담당이 정해지지 않은 것:
-- 7 종료 처리 (출력 한 줄, data.out 저장) + 4 data.out 쓰기
+- (완료) 7 종료 처리 + 4 data.out 쓰기: main.cpp finish
 - 어셈블러 (테스트 도구, 처음에 팀원 한 명이 맡기로 했던 것)
 
 2번 ↔ 3번 인터페이스 (정함):
-- `bool execute(CPU& cpu, Memory& mem, uint32_t inst)`
-- 3번이 cpu.pc를 직접 다음 PC로 바꿈. 반환값은 정상(true) / invalid(false)
+- `bool CPU::execute(Memory& mem, uint32_t inst)` → 호출: `cpu.execute(mem, inst)`
+- execute가 자기 pc를 직접 다음 PC로 바꿈. 반환값은 정상(true) / invalid(false)
 - invalid면 아무것도 바꾸지 않음. 2번이 fetchPC를 따로 저장해 두고 finish에 넘김
-- `bool isSupported(uint32_t inst)` (3번): 실행하지 않고 판별만. 100만 개 실행 후 다음 명령어 판단에 사용
+- `bool CPU::isSupported(uint32_t inst) const` (3번): 실행하지 않고 판별만. 100만 개 실행 후 다음 명령어 판단에 사용
 
 실행 루프 주의:
 - 입력은 줄 단위 텍스트가 아님. PC 위치에서 4바이트씩 읽음
@@ -61,20 +61,20 @@
 RISCV/
 ├── README.md
 ├── Makefile / CMakeLists.txt
-├── src/
-│   ├── main.cpp            인자 처리, 적재, run 호출                  (2번)
-│   ├── memory.h / .cpp     Memory 구조체, fetchWord/loadWord/storeWord (1번, 구현 완료)
-│   ├── loader.h / .cpp     loadText, loadData                         (2번)
-│   ├── simulator.h / .cpp  run (실행 루프), finish (종료 처리)         (run 2번, finish 미정)
-│   ├── cpu.h / .cpp        CPU 구조체(pc, reg), setReg, execute        (setReg 1번 완료, execute 3번)
-│   └── decoder.h / .cpp    해독                                       (3번, 설계도 3번)
+├── include/                헤더 (.h)
+├── src/                    구현 (.cpp)
+│   ├── main.cpp            main, run (실행 루프), finish (종료 처리)   (main·run 2번, finish 완료)
+│   ├── memory              Memory 클래스: instructions, data, fetchWord/loadWord/storeWord (1번, 완료)
+│   ├── loader              Loader 클래스: loadText, loadData          (2번)
+│   ├── cpu                 CPU 클래스: pc, reg, setReg, isSupported, execute (setReg 1번 완료, 나머지 3번)
+│   └── decoder             Decoder 클래스: 해독 (CPU가 멤버로 가짐)   (3번, 설계도 3번)
 ├── tests/
 │   ├── tools/              어셈블러 / 테스트 바이너리 생성
 │   ├── cases/              테스트별 폴더 (text.bin, data.bin, 기대 출력, 설명)
 │   └── run_tests           전체 테스트 실행 + 비교
 └── report/                 보고서, AI 사용 메모, 사진
 ```
-빌드: `g++ -std=c++17 -O2 -o riscv_sim src/*.cpp`
+빌드: `g++ -std=c++17 -O2 -Iinclude -o riscv_sim src/*.cpp`
 
 ## 메모리와 레지스터 표현
 - 레지스터: `uint32_t reg[32]` (32비트 칸 32개, x0~x31)
@@ -82,7 +82,7 @@ RISCV/
   - uint32_t라서 덧셈·뺄셈은 자동으로 하위 32비트만 남음
   - 부호가 필요한 곳(blt, bge)만 `(int32_t)`로 캐스팅
 - 메모리: 바이트 배열 (주소 하나 = 1바이트)
-  - text: `std::vector<uint8_t>` (text.bin 크기만큼)
+  - instructions: `std::vector<uint8_t>` (text.bin 크기만큼)
   - data: `uint8_t data[1024]`, 0으로 초기화
   - 배열 인덱스 = 주소 - 시작 주소 (예: 0x10000008 → data[8])
   - 32비트 값은 4칸에 나눠 저장, 낮은 바이트가 낮은 주소 (little-endian)
